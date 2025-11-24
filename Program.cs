@@ -1,35 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using RRHH.Core.Interfaces;
 using RRHH.Infraestructura.Data;
 using RRHH.Infraestructura.Repositorio;
+
 var builder = WebApplication.CreateBuilder(args);
-var url = Environment.GetEnvironmentVariable("DATABASE_URL");
-/*Console.WriteLine($"La cadena de conexión es: {url}");
-try
-{
-    using (var conn = new NpgsqlConnection(url))
-    {
-        conn.Open();
-        Console.WriteLine("Conexión exitosa");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error al conectar: {ex.Message}");
-}*/
-builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
-//Registrar el DbContext con la cadena de conexión de PostgreSQL
+// Obtener la cadena de conexión desde las variables de entorno
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+                       ?? builder.Configuration.GetConnectionString("RRHHContext");
+
+// Configurar DbContext con Npgsql
 builder.Services.AddDbContext<RRHH_DBContext>(options =>
-    options.UseNpgsql(url));
-// Add services to the container.
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(); // Intentar reconectar en caso de fallo
+    }));
 
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyApp", policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin();
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+    });
+});
+
+// Añadir controladores, Swagger y la API de endpoints
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Registrar repositorios
 builder.Services.AddScoped<IDepartamentoRepositorio, DepartamentoRepositorio>();
 builder.Services.AddScoped<IEmailRepositorio, EmailRepositorio>();
 builder.Services.AddScoped<IHistorialRepositorio, HistorialRepositorio>();
@@ -40,25 +43,22 @@ builder.Services.AddScoped<INominaRepositorio, NominaRepositorio>();
 builder.Services.AddScoped<IReporteEmpleadoRepositorio, ReporteEmpleadoRepositorio>();
 builder.Services.AddScoped<IEmpleadoCurriculumRepositorio, EmpleadoCurriculumRepositorio>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyApp", policybuilder =>
-    {
-        policybuilder.AllowAnyOrigin();
-        policybuilder.AllowAnyHeader();
-        policybuilder.AllowAnyMethod();
-    });
-});
-
 var app = builder.Build();
 
-//Vistas
+// Aplicar migraciones al iniciar la aplicación
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<RRHH_DBContext>();
+    try
+    {
+        dbContext.Database.Migrate(); // Aplica migraciones si no existen
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error aplicando migraciones: " + ex.Message);
+    }
 
-    // Ejecuta SQL para crear la vista en la base de datos
-    dbContext.Database.Migrate();
+    // Ejecutar creación de vistas en la base de datos
     await CrearVistas(dbContext);
 }
 
@@ -68,21 +68,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware
 app.UseCors("MyApp");
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
 
+// Función para crear las vistas en la base de datos
 async Task CrearVistas(RRHH_DBContext dbContext)
 {
     try
     {
-        var sql = @"
+        var sql1 = @"
             CREATE OR REPLACE VIEW vw_EmpleadosActivos AS
             SELECT 
                 e.""Codigo"" AS ""CodigoEmpleado"", 
@@ -189,8 +188,8 @@ async Task CrearVistas(RRHH_DBContext dbContext)
                 AND s.""Estado"" = 'Activo' 
                 AND pue.""Estado"" = 'Activo';
         ";
-        
-        await dbContext.Database.ExecuteSqlRawAsync(sql);
+
+        await dbContext.Database.ExecuteSqlRawAsync(sql1);
         await dbContext.Database.ExecuteSqlRawAsync(sql2);
         await dbContext.Database.ExecuteSqlRawAsync(sql3);
         await dbContext.Database.ExecuteSqlRawAsync(sql4);
@@ -198,7 +197,6 @@ async Task CrearVistas(RRHH_DBContext dbContext)
     }
     catch (Exception ex)
     {
-        // Manejar el error, por ejemplo, si la vista ya existe
-        Console.WriteLine($"Error creando la vista: {ex.Message}");
+        Console.WriteLine($"Error creando las vistas: {ex.Message}");
     }
 }
