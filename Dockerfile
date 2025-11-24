@@ -15,7 +15,7 @@ WORKDIR /src
 COPY ["RRHH.csproj", "."]
 RUN dotnet restore "./RRHH.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/."
 RUN dotnet build "./RRHH.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
