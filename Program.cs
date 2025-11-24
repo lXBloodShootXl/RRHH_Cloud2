@@ -4,7 +4,7 @@ using RRHH.Infraestructura.Data;
 using RRHH.Infraestructura.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 // Obtener la cadena de conexión desde las variables de entorno
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                        ?? builder.Configuration.GetConnectionString("RRHHContext");
