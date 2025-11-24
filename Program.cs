@@ -4,7 +4,7 @@ using RRHH.Infraestructura.Data;
 using RRHH.Infraestructura.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:8080");
+//builder.WebHost.UseUrls("http://0.0.0.0:8080");
 // Obtener la cadena de conexión desde las variables de entorno
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                        ?? builder.Configuration.GetConnectionString("RRHHContext");
@@ -15,8 +15,6 @@ builder.Services.AddDbContext<RRHH_DBContext>(options =>
     {
         npgsqlOptions.EnableRetryOnFailure(); // Intentar reconectar en caso de fallo
     }));
-
-// Configuración de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyApp", policyBuilder =>
@@ -62,7 +60,11 @@ using (var scope = app.Services.CreateScope())
     //await CrearVistas(dbContext);
 }
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+    c.RoutePrefix = string.Empty; // Esto hace que Swagger esté en la raíz (puedes ajustarlo si necesitas otro lugar)
+});
 
 // Middleware
 app.UseCors("MyApp");

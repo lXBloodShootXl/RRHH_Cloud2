@@ -17,7 +17,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de personas activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET")]
         public async Task<IActionResult> GetPersona()
         {
             var personas = await _personaRepositorio.GetPersona();
@@ -26,7 +26,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene un persona por su CI.
         /// </summary>
-        [HttpGet("{ci}")]
+        [HttpGet("GET/{ci}")]
         public async Task<IActionResult> GetPersona(string ci)
         {
             var persona = await _personaRepositorio.GetPersona(ci);
@@ -39,7 +39,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de personas marcados como borrados.
         /// </summary>
-        [HttpGet("borrados")]
+        [HttpGet("GET/Borrados")]
         public async Task<IActionResult> GetPersonasBorrados()
         {
             var personas = await _personaRepositorio.GetPersonaBorrados();
@@ -49,7 +49,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Crea un nuevo persona.
         /// </summary>
-        [HttpPost]
+        [HttpPost("POST/{ci}/{nombre}/{apellidoPaterno}/{apellidoMaterno}/{sexo}/{fechanacimiento}")]
         public async Task<IActionResult> PostPersona(string ci, string nombre, string? apellidoPaterno, string? apellidoMaterno, string sexo, DateTime fechanacimiento)
         {
             if (string.IsNullOrWhiteSpace(ci) || string.IsNullOrWhiteSpace(nombre))
@@ -63,7 +63,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Actualiza un persona existente.
         /// </summary>
-        [HttpPut("{ci}")]
+        [HttpPut("PUT/{ci}/{ciNuevo}/{nombre}/{apellidoPaterno}/{apellidoMaterno}")]
         public async Task<IActionResult> PutPersona(string ci, string ciNuevo, string nombre, string? apellidoPaterno, string? apellidoMaterno)
         {
             if (string.IsNullOrWhiteSpace(ci) || string.IsNullOrWhiteSpace(ciNuevo) || string.IsNullOrWhiteSpace(nombre))
@@ -79,7 +79,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Marca un persona como borrado (eliminación lógica).
         /// </summary>
-        [HttpDelete("{ci}")]
+        [HttpDelete("DEL/{ci}")]
         public async Task<IActionResult> DeletePersona(string ci)
         {
             var personaEliminado = await _personaRepositorio.DeletePersona(ci);
@@ -91,7 +91,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Habilita un persona previamente borrado (reactivación lógica).
         /// </summary>
-        [HttpPut("{ci}/habilitar")]
+        [HttpPut("HAB/{ci}")]
         public async Task<IActionResult> HabilitarPersona(string ci)
         {
             var persona = await _personaRepositorio.HabilitarPersona(ci);

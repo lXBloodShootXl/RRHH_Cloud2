@@ -17,7 +17,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Obtiene la lista de EmpleadoCurriculums activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET")]
         public async Task<IActionResult> GetEmpleadoCurriculum()
         {
             var EmpleadoCurriculums = await _EmpleadoCurriculumRepositorio.GetEmpleadoCurriculum();
@@ -26,7 +26,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Obtiene un EmpleadoCurriculum por su Cod_Emp.
         /// </summary>
-        [HttpGet("{Cod_Emp}")]
+        [HttpGet("GET/{Cod_Emp}")]
         public async Task<IActionResult> GetEmpleadoCurriculum(string Cod_Emp)
         {
             var EmpleadoCurriculum = await _EmpleadoCurriculumRepositorio.GetEmpleadoCurriculum(Cod_Emp);
@@ -39,7 +39,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Obtiene la lista de EmpleadoCurriculums marcados como borrados.
         /// </summary>
-        [HttpGet("borrados")]
+        [HttpGet("GET/Borrados")]
         public async Task<IActionResult> GetEmpleadoCurriculumsBorrados()
         {
             var EmpleadoCurriculums = await _EmpleadoCurriculumRepositorio.GetEmpleadoCurriculumBorrados();
@@ -49,7 +49,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Crea un nuevo EmpleadoCurriculum.
         /// </summary>
-        [HttpPost]
+        [HttpPost("POST/{cod_emp}/{perfil}/{fecharecepcion}")]
         public async Task<IActionResult> PostEmpleadoCurriculum(string cod_emp, string perfil, DateTime fecharecepcion)
         {
             if (string.IsNullOrWhiteSpace(cod_emp) || string.IsNullOrWhiteSpace(perfil))
@@ -63,7 +63,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Actualiza un EmpleadoCurriculum existente.
         /// </summary>
-        [HttpPut("{cod_emp}")]
+        [HttpPut("PUT/{cod_emp}/{perfil}/{fecharecepcion}")]
         public async Task<IActionResult> PutEmpleadoCurriculum(string cod_emp, string perfil, DateTime fecharecepcion)
         {
             if (string.IsNullOrWhiteSpace(cod_emp) || string.IsNullOrWhiteSpace(perfil))
@@ -79,7 +79,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Marca un EmpleadoCurriculum como borrado (eliminaCod_Empón lógica).
         /// </summary>
-        [HttpDelete("{Cod_Emp}")]
+        [HttpDelete("DEL/{Cod_Emp}")]
         public async Task<IActionResult> DeleteEmpleadoCurriculum(string Cod_Emp)
         {
             var EmpleadoCurriculumEliminado = await _EmpleadoCurriculumRepositorio.DeleteEmpleadoCurriculum(Cod_Emp);
@@ -91,7 +91,7 @@ namespace RRHH.PresentaCod_Empon.Controllers
         /// <summary>
         /// Habilita un EmpleadoCurriculum previamente borrado (reactivaCod_Empón lógica).
         /// </summary>
-        [HttpPut("{Cod_Emp}/habilitar")]
+        [HttpPut("HAB/{Cod_Emp}")]
         public async Task<IActionResult> HabilitarEmpleadoCurriculum(string Cod_Emp)
         {
             var EmpleadoCurriculum = await _EmpleadoCurriculumRepositorio.HabilitarEmpleadoCurriculum(Cod_Emp);

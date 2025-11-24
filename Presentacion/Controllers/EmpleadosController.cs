@@ -17,7 +17,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de empleados activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET")]
         public async Task<IActionResult> GetEmpleado()
         {
             var empleados = await _EmpleadoRepositorio.GetEmpleado();
@@ -26,7 +26,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene un Empleado por su CI.
         /// </summary>
-        [HttpGet("{codigo}")]
+        [HttpGet("GET/{codigo}")]
         public async Task<IActionResult> GetEmpleado(string codigo)
         {
             var Empleado = await _EmpleadoRepositorio.GetEmpleado(codigo);
@@ -39,7 +39,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de empleados marcados como borrados.
         /// </summary>
-        [HttpGet("borrados")]
+        [HttpGet("GET/Borrados")]
         public async Task<IActionResult> GetEmpleadosBorrados()
         {
             var empleados = await _EmpleadoRepositorio.GetEmpleadoBorrados();
@@ -49,7 +49,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Crea un nuevo Empleado.
         /// </summary>
-        [HttpPost]
+        [HttpPost("POST/{ci}/{codigo}/{fechaingreso}")]
         public async Task<IActionResult> PostEmpleado(string ci, string codigo, DateTime fechaingreso)
         {
             if (string.IsNullOrWhiteSpace(ci) || string.IsNullOrWhiteSpace(codigo))
@@ -63,7 +63,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Actualiza un Empleado existente.
         /// </summary>
-        [HttpPut("{codigo}")]
+        [HttpPut("PUT/{codigo}/{codigoNuevo}/{ci}")]
         public async Task<IActionResult> PutEmpleado(string codigo, string codigoNuevo, string ci)
         {
             if (string.IsNullOrWhiteSpace(codigo) || string.IsNullOrWhiteSpace(codigoNuevo))
@@ -79,7 +79,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Marca un Empleado como borrado (eliminación lógica).
         /// </summary>
-        [HttpDelete("{codigo}")]
+        [HttpDelete("DEL/{codigo}/{ci}")]
         public async Task<IActionResult> DeleteEmpleado(string codigo, string ci)
         {
             var EmpleadoEliminado = await _EmpleadoRepositorio.DeleteEmpleado(codigo, ci);
@@ -91,7 +91,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Habilita un Empleado previamente borrado (reactivación lógica).
         /// </summary>
-        [HttpPut("{codigo}/habilitar")]
+        [HttpPut("HAB/{codigo}/{ci}")]
         public async Task<IActionResult> HabilitarEmpleado(string codigo, string ci)
         {
             var Empleado = await _EmpleadoRepositorio.HabilitarEmpleado(codigo, ci);

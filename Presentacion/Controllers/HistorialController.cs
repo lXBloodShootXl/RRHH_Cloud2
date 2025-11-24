@@ -17,7 +17,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene la lista de historialdepartamentos activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET/{codigo_emp}/{codigo_puesto}/{cod_dep}")]
         public async Task<IActionResult> GetHistorialDepartamento(string codigo_emp, string codigo_puesto, string cod_dep)
         {
             var historialdepartamentos = await _HistorialDepartamentoRepositorio.GetHistorialDepartamento(codigo_emp, codigo_puesto, cod_dep);
@@ -26,7 +26,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene un Historial por su CI.
         /// </summary>
-        [HttpGet("Departamento/{cod_dep}")]
+        [HttpGet("GET/{cod_dep}")]
         public async Task<IActionResult> GetHistorialDepartamento(string cod_dep)
         {
             var Historial = await _HistorialDepartamentoRepositorio.GetHistorialDepartamento(cod_dep);
@@ -39,14 +39,14 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene la lista de historialdepartamentos marcados como borrados.
         /// </summary>
-        [HttpGet("Departamento/borrados/{cod_dep}")]
+        [HttpGet("GET/Borrados/{cod_dep}")]
         public async Task<IActionResult> GetHistorialDepartamentosBorrados(string cod_dep)
         {
             var historialdepartamentos = await _HistorialDepartamentoRepositorio.GetHistorialDepartamentoBorrados(cod_dep);
             return Ok(historialdepartamentos);
         }
 
-        [HttpGet("Departamento/borrados/{cod_dep}/{cod_emp}")]
+        [HttpGet("GET/Borrados/{cod_dep}/{cod_emp}")]
         public async Task<IActionResult> GetHistorialDepartamentosBorrados(string cod_emp, string cod_dep)
         {
             var historialdepartamentos = await _HistorialDepartamentoRepositorio.GetHistorialDepartamentoBorrados(cod_emp, cod_dep);
@@ -56,7 +56,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Crea un nuevo Historial.
         /// </summary>
-        [HttpPost("Departamento/")]
+        [HttpPost("POST/{cod_emp}/{codigo_puesto}/{cod_dep}/{fechaInicio}/{fechaFin}")]
         public async Task<IActionResult> PostHistorialDepartamento(string cod_emp, string codigo_puesto, string cod_dep, DateTime fechaInicio, DateTime? fechaFin = null)
         {
             if (string.IsNullOrWhiteSpace(cod_dep) || string.IsNullOrWhiteSpace(cod_emp) || string.IsNullOrEmpty(codigo_puesto))
@@ -71,7 +71,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Actualiza un Historial existente.
         /// </summary>
-        [HttpPut("Departamento/{cod_dep}/{cod_emp}")]
+        [HttpPut("PUT/{cod_emp}/{codigo_puesto}/{cod_dep}/{nuevaFechaFin}")]
         public async Task<IActionResult> PutHistorialDepartamento(string cod_emp, string codigo_puesto, string cod_dep, DateTime? nuevaFechaFin)
         {
             if (string.IsNullOrWhiteSpace(cod_emp) || string.IsNullOrWhiteSpace(cod_dep))
@@ -87,7 +87,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Marca un Historial como borrado (eliminacodigo_depón lógica).
         /// </summary>
-        [HttpDelete("Departamento/{cod_dep}/{cod_emp}")]
+        [HttpDelete("DEL/{cod_emp}/{codigo_puesto}/{cod_dep}")]
         public async Task<IActionResult> DeleteHistorialDepartamento(string cod_emp, string codigo_puesto, string cod_dep)
         {
             var HistorialDepartamentoEliminado = await _HistorialDepartamentoRepositorio.DeleteHistorialDepartamento(cod_emp, codigo_puesto, cod_dep);
@@ -99,7 +99,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Habilita un Historial previamente borrado (reactivacodigo_depón lógica).
         /// </summary>
-        [HttpPut("Departamento/{cod_dep}/{cod_emp}/habilitar")]
+        [HttpPut("HAB/{cod_emp}/{codigo_puesto}/{cod_dep}")]
         public async Task<IActionResult> HabilitarHistorialDepartamento(string cod_emp, string codigo_puesto, string codigo_dep)
         {
             var Historial = await _HistorialDepartamentoRepositorio.HabilitarHistorialDepartamento(cod_emp, codigo_puesto, codigo_dep);

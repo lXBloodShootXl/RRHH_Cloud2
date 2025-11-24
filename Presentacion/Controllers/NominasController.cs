@@ -17,7 +17,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de nominas activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET")]
         public async Task<IActionResult> GetNomina()
         {
             var nominas = await _nominaRepositorio.GetNomina();
@@ -26,7 +26,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene un nomina por su cod_nom.
         /// </summary>
-        [HttpGet("{Cod_Nom}")]
+        [HttpGet("GET/{Cod_Nom}")]
         public async Task<IActionResult> GetNomina(string Cod_Nom)
         {
             var nomina = await _nominaRepositorio.GetNomina(Cod_Nom);
@@ -39,7 +39,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Obtiene la lista de nominas marcados como borrados.
         /// </summary>
-        [HttpGet("borrados")]
+        [HttpGet("GET/Borrados")]
         public async Task<IActionResult> GetNominasBorrados()
         {
             var nominas = await _nominaRepositorio.GetNominaBorrados();
@@ -49,7 +49,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Crea un nuevo nomina.
         /// </summary>
-        [HttpPost]
+        [HttpPost("POST/{cod_nom}/{cod_emp}/{periodoInicio}/{periodoFin}/{salario}/{bonos}/{descuentos}/{total}")]
         public async Task<IActionResult> PostNomina(string cod_nom, string cod_emp, DateTime periodoInicio, DateTime periodoFin, decimal salario, decimal bonos, decimal descuentos, decimal total)
         {
             if (string.IsNullOrWhiteSpace(cod_nom) || string.IsNullOrWhiteSpace(cod_emp) || decimal.IsNegative(salario) || decimal.IsNegative(bonos) || decimal.IsNegative(descuentos) || decimal.IsNegative(total))
@@ -63,7 +63,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Actualiza un nomina existente.
         /// </summary>
-        [HttpPut("{cod_nom}")]
+        [HttpPut("PUT/{cod_nom}/{cod_emp}/{salario}/{bonos}/{descuentos}/{total}")]
         public async Task<IActionResult> PutNomina(string cod_nom, string cod_emp, decimal salario, decimal bonos, decimal descuentos, decimal total)
         {
             if (string.IsNullOrWhiteSpace(cod_nom) || string.IsNullOrWhiteSpace(cod_emp) || decimal.IsNegative(salario) || decimal.IsNegative(bonos) || decimal.IsNegative(descuentos) || decimal.IsNegative(total))
@@ -79,7 +79,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Marca un nomina como borrado (eliminación lógica).
         /// </summary>
-        [HttpDelete("{Cod_Nom}")]
+        [HttpDelete("DEL/{Cod_Nom}")]
         public async Task<IActionResult> DeleteNomina(string Cod_Nom)
         {
             var nominaEliminado = await _nominaRepositorio.DeleteNomina(Cod_Nom);
@@ -91,7 +91,7 @@ namespace RRHH.Presentacion.Controllers
         /// <summary>
         /// Habilita un nomina previamente borrado (reactivación lógica).
         /// </summary>
-        [HttpPut("{Cod_Nom}/habilitar")]
+        [HttpPut("HAB/{Cod_Nom}")]
         public async Task<IActionResult> HabilitarNomina(string Cod_Nom)
         {
             var nomina = await _nominaRepositorio.HabilitarNomina(Cod_Nom);

@@ -17,7 +17,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene la lista de reporteempleados activos.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GET")]
         public async Task<IActionResult> GetReporteEmpleado()
         {
             var reporteempleados = await _ReporteEmpleadoRepositorio.GetReporteEmpleado();
@@ -26,7 +26,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene un ReporteEmpleado por su codigos.
         /// </summary>
-        [HttpGet("/{cod_dep}")]
+        [HttpGet("GET/{cod_dep}")]
         public async Task<IActionResult> GetReporteEmpleado(string codigo_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleado = await _ReporteEmpleadoRepositorio.GetReporteEmpleado(codigo_emp, cod_dep, fecha);
@@ -39,7 +39,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene la lista de reporteempleados marcados como borrados.
         /// </summary>
-        [HttpGet("/borrados/")]
+        [HttpGet("GET/Borrados")]
         public async Task<IActionResult> GetReporteEmpleadosBorrados()
         {
             var reporteempleados = await _ReporteEmpleadoRepositorio.GetReporteEmpleadoBorrados();
@@ -49,7 +49,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Crea un nuevo ReporteEmpleado.
         /// </summary>
-        [HttpPost("/")]
+        [HttpPost("POST/{cod_emp}/{cod_dep}/{fecha}/{tipo}/{desc}")]
         public async Task<IActionResult> PostReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha, string tipo, string desc)
         {
             if (string.IsNullOrWhiteSpace(cod_dep) || string.IsNullOrWhiteSpace(cod_emp))
@@ -64,7 +64,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Actualiza un ReporteEmpleado existente.
         /// </summary>
-        [HttpPut("/{cod_dep}/{cod_emp}")]
+        [HttpPut("PUT/{cod_emp}/{cod_dep}/{fecha}/{tipo}/{desc}")]
         public async Task<IActionResult> PutReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha, string tipo, string desc)
         {
             if (string.IsNullOrWhiteSpace(cod_emp) || string.IsNullOrWhiteSpace(cod_dep))
@@ -80,7 +80,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Marca un ReporteEmpleado como borrado (eliminacodigo_depón lógica).
         /// </summary>
-        [HttpDelete("/{cod_dep}/{cod_emp}")]
+        [HttpDelete("DEL/{cod_dep}/{cod_emp}")]
         public async Task<IActionResult> DeleteReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleadoEliminado = await _ReporteEmpleadoRepositorio.DeleteReporteEmpleado(cod_emp, cod_dep, fecha);
@@ -92,7 +92,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Habilita un ReporteEmpleado previamente borrado (reactivacodigo_depón lógica).
         /// </summary>
-        [HttpPut("/{cod_dep}/{cod_emp}/habilitar")]
+        [HttpPut("HAB/{cod_dep}/{cod_emp}")]
         public async Task<IActionResult> HabilitarReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleado = await _ReporteEmpleadoRepositorio.HabilitarReporteEmpleado(cod_emp, cod_dep, fecha);
