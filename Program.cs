@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-
-//GIT SUCKS
-﻿using Microsoft.EntityFrameworkCore;
-=======
 using Microsoft.EntityFrameworkCore;
->>>>>>> eba11b281cfa6ba45eac7a8438e4416ddef22875
 using RRHH.Core.Interfaces;
 using RRHH.Infraestructura.Data;
 using RRHH.Infraestructura.Repositorio;
