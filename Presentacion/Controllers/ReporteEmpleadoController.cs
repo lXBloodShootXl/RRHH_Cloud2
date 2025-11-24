@@ -26,7 +26,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Obtiene un ReporteEmpleado por su codigos.
         /// </summary>
-        [HttpGet("GET/{cod_dep}")]
+        [HttpGet("GET/{codigo_emp}/{cod_dep}/{fecha}")]
         public async Task<IActionResult> GetReporteEmpleado(string codigo_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleado = await _ReporteEmpleadoRepositorio.GetReporteEmpleado(codigo_emp, cod_dep, fecha);
@@ -80,7 +80,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Marca un ReporteEmpleado como borrado (eliminacodigo_depón lógica).
         /// </summary>
-        [HttpDelete("DEL/{cod_dep}/{cod_emp}")]
+        [HttpDelete("DEL/{cod_emp}/{cod_dep}/{fecha}")]
         public async Task<IActionResult> DeleteReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleadoEliminado = await _ReporteEmpleadoRepositorio.DeleteReporteEmpleado(cod_emp, cod_dep, fecha);
@@ -92,7 +92,7 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// <summary>
         /// Habilita un ReporteEmpleado previamente borrado (reactivacodigo_depón lógica).
         /// </summary>
-        [HttpPut("HAB/{cod_dep}/{cod_emp}")]
+        [HttpPut("HAB/{cod_emp}/{cod_dep}/{fecha}")]
         public async Task<IActionResult> HabilitarReporteEmpleado(string cod_emp, string cod_dep, DateTime fecha)
         {
             var ReporteEmpleado = await _ReporteEmpleadoRepositorio.HabilitarReporteEmpleado(cod_emp, cod_dep, fecha);

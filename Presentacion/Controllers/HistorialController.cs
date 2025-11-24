@@ -100,9 +100,9 @@ namespace RRHH.Presentacodigo_depon.Controllers
         /// Habilita un Historial previamente borrado (reactivacodigo_depón lógica).
         /// </summary>
         [HttpPut("HAB/{cod_emp}/{codigo_puesto}/{cod_dep}")]
-        public async Task<IActionResult> HabilitarHistorialDepartamento(string cod_emp, string codigo_puesto, string codigo_dep)
+        public async Task<IActionResult> HabilitarHistorialDepartamento(string cod_emp, string codigo_puesto, string cod_dep)
         {
-            var Historial = await _HistorialDepartamentoRepositorio.HabilitarHistorialDepartamento(cod_emp, codigo_puesto, codigo_dep);
+            var Historial = await _HistorialDepartamentoRepositorio.HabilitarHistorialDepartamento(cod_emp, codigo_puesto, cod_dep);
 
             if (Historial is null)
                 return NotFound($"No se encontró un Historial con codigo {cod_emp}.");

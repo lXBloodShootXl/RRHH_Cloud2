@@ -5,11 +5,11 @@ using System.Text.Json;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SucursalController : ControllerBase
+public class ContabilidadController : ControllerBase
 {
     private readonly HttpClient _http;
 
-    public SucursalController(HttpClient http)
+    public ContabilidadController(HttpClient http)
     {
         _http = http;
         _http.BaseAddress = new Uri("https://contabilidad-production-8be2.up.railway.app/");
