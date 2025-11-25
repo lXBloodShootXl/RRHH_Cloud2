@@ -21,27 +21,29 @@ namespace RRHH.Infraestructura.Repositorio
         /// </summary>
         public async Task<EmpleadoDTO> GetEmpleado(string codigo)
         {
-            var e = await _context.Empleados
-                .AsNoTracking()
-                .Where(e => e.Codigo == codigo && e.Estado != "Borrado")
-                //.Select(e => e.toEmpleadoDTO())
-                .FirstOrDefaultAsync();
-            if (e == null)
+            // Obtener el empleado y su persona asociada en una sola consulta, filtrado por el código
+            var empleado = await (from e in _context.Empleados
+                                  join p in _context.Personas on e.PersonaId equals p.PersonaId
+                                  where e.Estado != "Borrado" && e.Codigo == codigo // Filtramos por el código del empleado
+                                  select new
+                                  {
+                                      Empleado = e,
+                                      Persona = p
+                                  }).FirstOrDefaultAsync();
+
+            // Si no encontramos el empleado, retornamos null o lanzamos una excepción, dependiendo de lo que prefieras
+            if (empleado == null)
             {
-                return null;
+                return null; // O lanzar una excepción, como "throw new Exception("Empleado no encontrado")";
             }
-            var p = await _context.Personas
-                .AsNoTracking()
-                .Where(e => e.PersonaId == e.PersonaId && e.Estado == "Activo")
-                .FirstOrDefaultAsync();
-            if (p == null)
-            {
-                return null;
-            }
-            EmpleadoDTO eDTO = e.toEmpleadoDTO();
-            eDTO.Persona = p.toPersonaDTO();
-            return eDTO;
+
+            // Mapear los resultados a DTOs usando el método toDTO()
+            var empleadoDTO = empleado.Empleado.toEmpleadoDTO();
+            empleadoDTO.Persona = empleado.Persona.toPersonaDTO();
+
+            return empleadoDTO;
         }
+
 
         /// <summary>
         /// Obtiene todos los empleados activos (no borrados).

@@ -57,7 +57,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Ejecutar creación de vistas en la base de datos
-    //await CrearVistas(dbContext);
+    await CrearVistas(dbContext);
 }
 app.UseSwagger();
 app.UseSwaggerUI(c =>

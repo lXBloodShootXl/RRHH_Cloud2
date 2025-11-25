@@ -30,7 +30,7 @@ namespace RRHH.Presentacion.Controllers
         public async Task<IActionResult> GetEmpleado(string codigo)
         {
             var Empleado = await _EmpleadoRepositorio.GetEmpleado(codigo);
-            if (Empleado is null)
+            if (Empleado == null)
                 return NotFound($"No se encontró un Empleado con codigo {codigo}.");
 
             return Ok(Empleado);

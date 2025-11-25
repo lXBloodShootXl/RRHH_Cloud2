@@ -13,14 +13,14 @@ namespace RRHH.Core.Mapedores
                 ApellidoPaterno = persona.ApellidoPaterno,
                 ApellidoMaterno = persona.ApellidoMaterno,
                 FechaNacimiento = persona.FechaNacimiento,
-                Sexo = persona.Sexo,
+                Sexo = persona.Sexo
                 /*PersonaTelefonos = persona.PersonaTelefonos
-                    .Select(x => x.toPersonaTelefonoDTO()) // Usa Select para proyectar los elementos
-                    .ToList()  // Luego conviértelo en lista
+                    .Select(x => x.toPersonaTelefonoDTO())
+                    .ToList()
                 ,
                 PersonaEmails = persona.PersonaEmails
-                    .Select(x => x.toPersonaEmailDTO()) // Usa Select para proyectar los elementos
-                    .ToList(),  // Luego conviértelo en lista
+                    .Select(x => x.toPersonaEmailDTO())
+                    .ToList(),
                 Empleado = persona.Empleado.toEmpleadoDTO()*/
             };
         }

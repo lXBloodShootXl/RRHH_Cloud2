@@ -12,8 +12,8 @@ using RRHH.Infraestructura.Data;
 namespace RRHH.Migrations
 {
     [DbContext(typeof(RRHH_DBContext))]
-    [Migration("20251124001319_M1")]
-    partial class M1
+    [Migration("20251125060948_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
